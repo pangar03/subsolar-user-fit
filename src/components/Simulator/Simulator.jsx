@@ -90,23 +90,6 @@ const Simulator = () => {
                             </span>
                         </span>
                     )}
-
-                    <button
-                        onClick={resetQuiz}
-                        className="
-                            px-3 md:px-[14px] py-[7px]
-                            border border-white/20 rounded-[8px]
-                            bg-transparent text-white/60
-                            text-[12px] font-semibold font-jakarta
-                            cursor-pointer transition-all duration-200
-                            hover:bg-white/10 hover:text-white
-                            whitespace-nowrap
-                        "
-                    >
-                        {/* Full label on sm+, icon-only on xs */}
-                        <span className="sm:hidden">↩</span>
-                        <span className="hidden sm:inline">↩ Reiniciar</span>
-                    </button>
                 </div>
             </header>
 
