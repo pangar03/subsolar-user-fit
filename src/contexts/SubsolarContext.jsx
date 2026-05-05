@@ -418,7 +418,7 @@ const SubsolarContext = createContext(null);
 
 export function SubsolarProvider({ children }) {
     // ── Quiz ──────────────────────────────────────────────────
-    const [screen, setScreen] = useState("quiz");
+    const [screen, setScreen] = useState("simulator");
     const [currentQ, setCurrentQ] = useState(0);
     const [answers, setAnswers] = useState({});
     const [result, setResult] = useState(null);

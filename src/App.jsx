@@ -5,8 +5,8 @@ import Simulator from "./components/Simulator/Simulator";
 
 function AppScreens() {
     const { screen } = useSubsolar();
-    if (screen === "quiz") return <QuizCard />;
-    if (screen === "result") return <ResultCard />;
+    // if (screen === "quiz") return <QuizCard />;
+    // if (screen === "result") return <ResultCard />;
     if (screen === "simulator") return <Simulator />;
 }
 function App() {
