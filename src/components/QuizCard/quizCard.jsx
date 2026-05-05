@@ -1,5 +1,5 @@
 import { useSubsolar, QUESTIONS } from "../../contexts/SubsolarContext";
-import QuizOption from "../QuizOption/QuizOption";
+import QuizOption from "../QuizOption/quizOption";
 
 /**
  * QuizCard
