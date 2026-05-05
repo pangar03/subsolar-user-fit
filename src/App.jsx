@@ -1,5 +1,5 @@
 import { SubsolarProvider, useSubsolar } from "./contexts/SubsolarContext";
-import QuizCard from "./components/QuizCard/QuizCard";
+import QuizCard from "./components/QuizCard/quizCard";
 import ResultCard from "./components/ResultCard/ResultCard";
 import Simulator from "./components/Simulator/Simulator";
 
