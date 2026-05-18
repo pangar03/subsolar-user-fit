@@ -46,7 +46,7 @@ const Simulator = () => {
             Mobile:  flex col, min-h-screen
             Desktop: same — the inner body switches from stacked to side-by-side
         */
-        <div className="flex flex-col min-h-screen bg-[#B8D4E8]">
+        <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#fff7e8] via-[#f8fdff] to-[#f4fbf8]">
             {/* ── Header ──────────────────────────────────────────────
                 Identical on all breakpoints except the profile chip
                 hides its text label on very small screens (< sm) to
@@ -54,41 +54,45 @@ const Simulator = () => {
 
                 sticky + z-10 so it stays above the scrolling panels.
             */}
-            <header className="sticky top-0 z-10 flex items-center justify-between px-4 md:px-6 py-[14px] bg-[#1A2942] shrink-0">
-                {/* Logo — unchanged */}
-                <div className="flex items-center gap-2 font-nunito font-black text-[18px] text-white">
-                    <span>☀️</span>
-                    <span>
-                        Sub<span className="text-[#5BB8F5]">solar</span>
-                    </span>
+            <header className="sticky top-0 z-10 flex items-center justify-between px-4 md:px-8 py-4 bg-white/72 backdrop-blur-[18px] border-b border-[rgba(12,102,150,0.08)] shrink-0">
+                {/* Logo — updated for new design */}
+                <div className="flex items-center gap-2 font-black text-[20px] md:text-[22px] text-[#0b4f8a]">
+                    <span className="text-[24px]">☀️</span>
+                    <span>Subsolar</span>
                 </div>
 
-                <div className="flex items-center gap-2 md:gap-[10px]">
+                {/* Right side — profile badge and subtitle */}
+                <div className="flex items-center gap-3">
                     {result && (
-                        <span
-                            className={`
-                                px-3 md:px-[14px] py-1.5 rounded-full
-                                text-[11px] md:text-[12px] font-bold tracking-[0.04em]
-                                ${
-                                    isResilient
-                                        ? "bg-[rgba(26,188,156,0.2)] text-[#80CBC4]"
-                                        : "bg-[rgba(91,184,245,0.2)] text-[#90CAF9]"
-                                }
-                            `}
-                        >
-                            {/*
-                                On mobile show only the emoji part of the badge label
-                                (e.g. "⚡" or "💰") to save horizontal space.
-                                On sm+ show the full label.
-                                badgeLabel format is "⚡ Perfil Resiliente" — split on space.
-                            */}
-                            <span className="sm:hidden">
-                                {result.badgeLabel.split(" ")[0]}
+                        <div className="flex flex-col items-end gap-0.5">
+                            <span
+                                className={`
+                                    px-3 md:px-4 py-1.5 rounded-full
+                                    text-[11px] md:text-[12px] font-bold tracking-[0.04em]
+                                    ${
+                                        isResilient
+                                            ? "bg-[rgba(19,167,107,0.12)] text-[#08724f]"
+                                            : "bg-[rgba(29,143,227,0.12)] text-[#0b4f8a]"
+                                    }
+                                `}
+                            >
+                                {/*
+                                    On mobile show only the emoji part of the badge label
+                                    (e.g. "⚡" or "💰") to save horizontal space.
+                                    On sm+ show the full label.
+                                    badgeLabel format is "⚡ Perfil Resiliente" — split on space.
+                                */}
+                                <span className="sm:hidden">
+                                    {result.badgeLabel.split(" ")[0]}
+                                </span>
+                                <span className="hidden sm:inline">
+                                    {result.badgeLabel}
+                                </span>
                             </span>
-                            <span className="hidden sm:inline">
-                                {result.badgeLabel}
-                            </span>
-                        </span>
+                            <p className="hidden md:block text-[10px] text-[#617789] font-medium">
+                                Simula tu hogar
+                            </p>
+                        </div>
                     )}
                 </div>
             </header>

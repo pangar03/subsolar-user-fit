@@ -5,44 +5,39 @@ import { useSubsolar, PLANS_DATA } from "../../contexts/SubsolarContext";
 // ─────────────────────────────────────────────
 
 /**
- * BatterySection
+ * BatterySection — Redesigned as the visual hero of the simulator
  *
- * Displays the current battery percentage, a colour-coded progress bar,
- * and the hours-of-backup calculation.
- *
- * Original CSS:
- *   .battery-section        → padding:20px; border-bottom: 1px solid #EFF3F6;
- *   .battery-section-title  → 11px uppercase label
- *   .battery-display        → flex row, gap:14px, mb:16px
- *   .battery-icon-wrap      → 56×56px shrink-0 (SVG battery icon)
- *   .battery-pct            → Nunito 32px black navy
- *   .battery-pct-sub        → 11px gray-400
- *   .battery-bar-wrap       → h:12px gray-100 rounded-full overflow-hidden mb:10px
- *   .battery-bar-fill       → h:100% rounded-full, transition width+bg 0.6s
- *   .battery-hours          → flex space-between
- *   .hours-big              → Nunito 28px black navy
- *   .hours-unit / .hours-label → 12px gray-400
+ * Now includes:
+ * - Eyebrow label with icon
+ * - Compact percentage and hours display
+ * - Plan selector grid (3 plans)
+ * - Full-width primary CTA button
+ * - Supporting copy text
  */
-const BatterySection = ({ battery }) => {
+const BatterySection = ({ battery, selectedPlan, selectPlan }) => {
     const pct = battery.pct;
     const color = battery.color;
 
     return (
-        <div className="px-5 py-5 border-b border-[#EFF3F6]">
-            {/* .battery-section-title */}
-            <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#94A3B8] mb-3">
-                🔋 Estado de batería
+        <div className="px-5 py-2 border-b border-[#EFF3F6]">
+            {/* Eyebrow label */}
+            <div className="eyebrow mb-1.5 w-fit">
+                ☀️ Tarifa fija mensual · Sin inversión inicial
+            </div>
+
+            {/* Section heading — balanced header */}
+            <h2 className="!text-[24px] !font-black text-[#163042] mb-2 leading-tight">
+                Estado de tu batería
+            </h2>
+            <p className="text-[16px] text-[#617789] mb-3 leading-relaxed">
+                Con este consumo, tu batería cubre aproximadamente{" "}
+                {battery.hoursDisplay} horas de respaldo
             </p>
 
-            {/* .battery-display */}
-            <div className="flex items-center gap-[14px] mb-4">
-                {/*
-                    .battery-icon-wrap + inline SVG
-                    Original SVG has a dynamic fill rect and text node.
-                    We drive both via the `battery` values from context.
-                    The rect width scales from 0 to 28px (the inner fill area).
-                */}
-                <div className="shrink-0 w-14 h-14">
+            {/* Battery display — ultra compact */}
+            <div className="flex items-end gap-1.5 mb-2">
+                {/* Battery icon — much smaller */}
+                <div className="shrink-0 w-8 h-8">
                     <svg
                         viewBox="0 0 56 56"
                         fill="none"
@@ -76,7 +71,7 @@ const BatterySection = ({ battery }) => {
                             rx="3"
                             fill="#EFF3F6"
                         />
-                        {/* Dynamic fill bar — width = 28 * pct / 100 */}
+                        {/* Dynamic fill bar */}
                         <rect
                             x="12"
                             y="16"
@@ -94,70 +89,108 @@ const BatterySection = ({ battery }) => {
                             rx="2"
                             fill="#94A3B8"
                         />
-                        <text
-                            x="28"
-                            y="32"
-                            textAnchor="middle"
-                            fontSize="10"
-                            fontWeight="800"
-                            fontFamily="Nunito, sans-serif"
-                            fill="#1A2942"
-                        >
-                            {pct}%
-                        </text>
                     </svg>
                 </div>
 
+                {/* Percentage display — smaller */}
                 <div>
-                    {/* .battery-pct → Nunito 32px black */}
-                    <p className="font-nunito text-[32px] font-black text-[#1A2942] leading-none">
+                    <p className="text-xl font-black text-[#163042] leading-none">
                         {pct}%
                     </p>
-                    {/* .battery-pct-sub */}
-                    <span className="block text-[11px] text-[#94A3B8] font-medium mt-0.5">
-                        capacidad disponible
+                    <span className="block text-[14px] text-[#617789] font-medium mt-0.5">
+                        disponible
                     </span>
                 </div>
             </div>
 
-            {/*
-                .battery-bar-wrap
-                height:12px; background:#EFF3F6; border-radius:99px; overflow:hidden; margin-bottom:10px;
-            */}
-            <div className="h-3 bg-[#EFF3F6] rounded-full overflow-hidden mb-2.5">
-                {/*
-                    .battery-bar-fill
-                    transition: width 0.6s cubic-bezier(.4,0,.2,1), background 0.6s;
-                */}
-                <div
-                    className="h-full rounded-full"
-                    style={{
-                        width: `${pct}%`,
-                        background: color,
-                        transition:
-                            "width 0.6s cubic-bezier(.4,0,.2,1), background 0.6s",
-                    }}
-                />
+            {/* Progress bar */}
+            <div className="mb-2">
+                <div className="h-2 bg-[#EFF3F6] rounded-full overflow-hidden">
+                    <div
+                        className="h-full rounded-full"
+                        style={{
+                            width: `${pct}%`,
+                            background: color,
+                            transition:
+                                "width 0.6s cubic-bezier(.4,0,.2,1), background 0.6s",
+                        }}
+                    />
+                </div>
             </div>
 
-            {/* .battery-hours → flex space-between items-center */}
-            <div className="flex justify-between items-center">
+            {/* Hours of backup — ultra compact */}
+            <div className="flex justify-between items-end mb-2">
                 <div>
-                    {/* .hours-big → Nunito 28px black navy */}
-                    <span className="font-nunito text-[28px] font-black text-[#1A2942]">
+                    <span className="text-lg font-black text-[#163042] leading-none">
                         {battery.hoursDisplay}
                     </span>
-                    {/* .hours-unit */}
-                    <span className="text-[12px] text-[#94A3B8] font-medium">
-                        {" "}
-                        horas
+                    <span className="block text-[14px] text-[#617789] font-medium mt-0.5">
+                        horas respaldo
                     </span>
                 </div>
-                {/* .hours-label */}
-                <span className="text-[12px] text-[#94A3B8] text-right">
+                <p className="text-[14px] text-[#617789] text-right font-medium">
                     {battery.hoursLabel}
-                </span>
+                </p>
             </div>
+
+            {/* Plan Selector Grid — micro compact */}
+            <div className="mb-3">
+                <p className="text-[14px] font-bold tracking-[0.15em] uppercase text-[#617789] mb-1">
+                    Elige tu plan
+                </p>
+                <div className="grid grid-cols-3 gap-1">
+                    {Object.entries(PLANS_DATA).map(([key, plan]) => {
+                        // Extract abbreviated plan names: Básico, Equilibrio, Respaldo Total
+                        const planNames = {
+                            basico: "Básico",
+                            equilibrio: "Equilibrio",
+                            respaldo: "Respaldo",
+                        };
+                        const planName = planNames[key] || plan.name;
+
+                        return (
+                            <button
+                                key={key}
+                                onClick={() => selectPlan(key)}
+                                className={`
+                                    px-1.5 py-1 rounded-[6px] text-center
+                                    border transition-all duration-200
+                                    font-bold
+                                    ${
+                                        selectedPlan === key
+                                            ? "border-[#13a76b] bg-gradient-to-br from-[#e9fbf3] to-white shadow-[0_2px_6px_rgba(19,167,107,0.12)]"
+                                            : "border-[rgba(29,143,227,0.12)] bg-white hover:border-[#1d8fe3]"
+                                    }
+                                `}
+                            >
+                                <div className="font-black text-[14px] text-[#163042] leading-tight">
+                                    {planName}
+                                </div>
+                                <div className="text-[14px] text-[#1d8fe3] font-bold">
+                                    {battery.planHours[key]}h
+                                </div>
+                            </button>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {/* Primary CTA Button — full-width */}
+            <button
+                onClick={() =>
+                    alert(
+                        "¡Gracias! Un asesor de GdO Solar se contactará contigo pronto.",
+                    )
+                }
+                className="btn btn-primary btn-full py-1.5 animated-in text-sm font-bold"
+            >
+                Quiero este plan
+            </button>
+
+            {/* Supporting copy under CTA */}
+            <p className="text-[14px] text-[#617789] mb-0 font-medium mt-1">
+                Un asesor te contactará para confirmar
+            </p>
         </div>
     );
 };
@@ -165,27 +198,7 @@ const BatterySection = ({ battery }) => {
 // ─────────────────────────────────────────────
 
 /**
- * ApplianceItem — a single toggleable appliance row.
- *
- * Original CSS:
- *   .appliance-item (base)
- *     display:flex; align-items:center; gap:10px; padding:10px 12px;
- *     border-radius:12px; border:2px solid #EFF3F6; cursor:pointer;
- *     background:white; transition:all 0.2s; width:100%; text-align:left;
- *   :hover → border-color:#5BB8F5; background:#D6EEFB;
- *   .appliance-item.on
- *     border-color:#2E86C1; background:#EBF5FD;
- *     box-shadow: 0 2px 8px rgba(91,184,245,0.2);
- *
- *   .app-emoji  → 20px, w:28px center
- *   .app-name   → 13px font-semibold navy
- *   .app-watts  → 11px gray-400
- *
- *   .toggle-dot (custom CSS toggle pill):
- *     width:22px; height:14px; border-radius:99px;
- *     background: gray-200 (off) / sky-dark (on);
- *     ::after → white dot, translateX(8px) when on
- *   Since ::after can't be Tailwind, the pill is rendered as two divs.
+ * ApplianceItem — Redesigned appliance card with better state visibility
  */
 const ApplianceItem = ({ appliance, roomId }) => {
     const { toggleAppliance } = useSubsolar();
@@ -195,51 +208,47 @@ const ApplianceItem = ({ appliance, roomId }) => {
         <button
             onClick={() => toggleAppliance(roomId, appliance.id)}
             className={`
-                flex items-center gap-[10px]
-                px-3 py-[10px] rounded-[12px]
-                border-2 w-full text-left
-                font-jakarta cursor-pointer
+                device-card
+                flex items-center gap-[14px]
+                px-4 py-3
+                border-2
+                w-full text-left
+                cursor-pointer
                 transition-all duration-200
+                animated-in
                 ${
                     isOn
-                        ? "border-[#2E86C1] bg-[#EBF5FD] shadow-[0_2px_8px_rgba(91,184,245,0.2)]"
-                        : "border-[#EFF3F6] bg-white hover:border-[#5BB8F5] hover:bg-[#D6EEFB]"
+                        ? "border-[#13a76b] bg-gradient-to-br from-[#e9fbf3] to-white"
+                        : "border-[rgba(29,143,227,0.12)] bg-white"
                 }
             `}
         >
-            {/* .app-emoji → font-size:20px; width:28px; text-align:center; */}
-            <span className="text-[20px] w-7 text-center shrink-0">
+            {/* Device emoji */}
+            <span className="text-[24px] w-7 text-center shrink-0">
                 {appliance.emoji}
             </span>
 
-            {/* .app-info → flex:1 */}
+            {/* Device info */}
             <div className="flex-1 min-w-0">
-                {/* .app-name → font-size:13px; font-weight:600; color:#1A2942; */}
-                <span className="block text-[13px] font-semibold text-[#1A2942] truncate">
+                <span className="block text-[14px] font-bold text-[#163042] truncate">
                     {appliance.name}
                 </span>
-                {/* .app-watts → font-size:11px; color:#94A3B8; */}
-                <span className="block text-[11px] text-[#94A3B8] mt-px">
+                <span className="block text-[12px] text-[#617789] font-medium mt-0.5">
                     {appliance.watts}W
                 </span>
             </div>
 
-            {/*
-                Toggle pill — replicates .toggle-dot + ::after without pseudo-elements.
-                Off: gray track + left-aligned white dot
-                On:  sky-dark track + right-aligned white dot
-                transition on both track color and dot position.
-            */}
+            {/* Toggle switch */}
             <div
                 className={`
-                    relative shrink-0 w-[22px] h-[14px] rounded-full
+                    relative shrink-0 w-[24px] h-[16px] rounded-full
                     transition-colors duration-200
-                    ${isOn ? "bg-[#2E86C1]" : "bg-[#DDE4EB]"}
+                    ${isOn ? "bg-[#13a76b]" : "bg-[#DDE4EB]"}
                 `}
             >
                 <div
                     className={`
-                        absolute top-[2px] w-[10px] h-[10px] rounded-full bg-white
+                        absolute top-[3px] w-[12px] h-[12px] rounded-full bg-white
                         shadow-[0_1px_3px_rgba(0,0,0,0.2)]
                         transition-transform duration-200
                         ${isOn ? "translate-x-[10px]" : "translate-x-[2px]"}
@@ -253,19 +262,7 @@ const ApplianceItem = ({ appliance, roomId }) => {
 // ─────────────────────────────────────────────
 
 /**
- * PlanCard — a single selectable plan row in the plan comparison section.
- *
- * Original CSS:
- *   .plan-card (base)
- *     padding:10px 12px; border-radius:10px; border:2px solid transparent;
- *     cursor:pointer; display:flex; align-items:center; gap:10px;
- *     background:white; transition:all 0.2s; width:100%;
- *   :hover → border-color:#5BB8F5;
- *   .plan-card.selected-plan → border-color:#2E86C1; background:#EBF5FD;
- *
- *   .plan-dot  → 10×10px circle, flex-shrink:0
- *   .plan-name → 12px bold navy flex:1
- *   .plan-hours-tag → 11px bold sky-dark, sky-light bg, rounded-full pill
+ * PlanCard — Redesigned plan selector with better contrast
  */
 const PlanCard = ({ planKey, plan, isSelected, hoursTag }) => {
     const { selectPlan } = useSubsolar();
@@ -274,35 +271,31 @@ const PlanCard = ({ planKey, plan, isSelected, hoursTag }) => {
         <button
             onClick={() => selectPlan(planKey)}
             className={`
-                flex items-center gap-[10px]
-                px-3 py-[10px] rounded-[10px]
+                flex items-center gap-[12px]
+                px-4 py-3 rounded-[14px]
                 border-2 w-full text-left
-                font-jakarta cursor-pointer
+                cursor-pointer
                 transition-all duration-200
                 ${
                     isSelected
-                        ? "border-[#2E86C1] bg-[#EBF5FD]"
-                        : "border-transparent bg-white hover:border-[#5BB8F5]"
+                        ? "border-[#13a76b] bg-gradient-to-r from-[#e9fbf3] to-white shadow-[0_4px_12px_rgba(19,167,107,0.2)]"
+                        : "border-[rgba(29,143,227,0.12)] bg-white hover:border-[#1d8fe3]"
                 }
             `}
         >
-            {/* .plan-dot */}
+            {/* Plan indicator dot */}
             <div
-                className="w-[10px] h-[10px] rounded-full shrink-0"
+                className="w-[12px] h-[12px] rounded-full shrink-0"
                 style={{ background: plan.dotColor }}
             />
 
-            {/* .plan-name → font-size:12px; font-weight:700; color:#1A2942; flex:1; */}
-            <span className="flex-1 text-[12px] font-bold text-[#1A2942] text-left">
+            {/* Plan name */}
+            <span className="flex-1 text-[13px] font-bold text-[#163042] text-left">
                 {plan.name}
             </span>
 
-            {/*
-                .plan-hours-tag
-                font-size:11px; font-weight:700; color:#2E86C1;
-                background:#D6EEFB; padding:2px 8px; border-radius:99px;
-            */}
-            <span className="text-[11px] font-bold text-[#2E86C1] bg-[#D6EEFB] px-2 py-0.5 rounded-full">
+            {/* Hours tag */}
+            <span className="text-[11px] font-bold text-white bg-[#1d8fe3] px-2.5 py-1 rounded-full shrink-0">
                 {hoursTag}h
             </span>
         </button>
@@ -316,44 +309,36 @@ const PlanCard = ({ planKey, plan, isSelected, hoursTag }) => {
 /**
  * AppliancePanel
  *
- * Right panel of the Simulator. Contains three stacked sections:
- *   1. BatterySection  — live battery gauge
- *   2. Appliances      — toggleable list for the current room
- *   3. Plan comparison — plan selector + CTA button
- *
- * Original CSS:
- *   .right-panel
- *     background: rgba(255,255,255,0.95); border-left:1px solid #DDE4EB;
- *     display:flex; flex-direction:column; overflow-y:auto;
+ * Right panel of the Simulator showing:
+ *   1. Battery status (hero element with CTA)
+ *   2. Room appliances (toggleable list)
+ *   3. Plan comparison (selector with CTAs)
  */
 const AppliancePanel = () => {
-    const { currentRoom, rooms, selectedPlan, battery } = useSubsolar();
+    const { currentRoom, rooms, selectedPlan, selectPlan, battery } =
+        useSubsolar();
 
     const room = rooms[currentRoom];
     const appliances = room?.appliances ?? [];
 
     return (
-        /*
-            .right-panel
-            background:rgba(255,255,255,0.95); border-left:1px solid #DDE4EB;
-            display:flex; flex-direction:column; overflow-y:auto;
-        */
-        <div className="flex flex-col overflow-y-auto bg-white/[.95] border-l border-[#DDE4EB]">
-            {/* ── 1. Battery ─────────────────────────────────── */}
-            <BatterySection battery={battery} />
+        <div className="flex flex-col overflow-y-auto bg-white/[0.95] border-l border-[#DDE4EB]">
+            {/* ── 1. Battery (Hero) with Plan Selector ──────────── */}
+            <BatterySection
+                battery={battery}
+                selectedPlan={selectedPlan}
+                selectPlan={selectPlan}
+            />
 
             {/* ── 2. Appliances ──────────────────────────────── */}
-            {/*
-                .appliances-section → padding:16px 20px; flex:1;
-                .appliances-title   → 11px uppercase label, mb:12px
-                .appliance-list     → flex col, gap:8px
-            */}
-            <div className="flex-1 px-5 py-4 border-b border-[#EFF3F6]">
-                <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#94A3B8] mb-3">
-                    ⚡ Electrodomésticos — {room?.label}
-                </p>
+            <div className="flex-1 px-5 py-5 border-b border-[#EFF3F6]">
+                <div className="eyebrow mb-4 w-fit">⚡ Electrodomésticos</div>
 
-                <div className="flex flex-col gap-2">
+                <h3 className="text-[16px] font-bold text-[#163042] mb-4">
+                    {room?.label || "Habitación"}
+                </h3>
+
+                <div className="flex flex-col gap-2.5">
                     {appliances.map((appliance) => (
                         <ApplianceItem
                             key={appliance.id}
@@ -362,58 +347,6 @@ const AppliancePanel = () => {
                         />
                     ))}
                 </div>
-            </div>
-
-            {/* ── 3. Plan comparison ─────────────────────────── */}
-            {/*
-                .plan-section
-                padding:16px 20px; background:#F8FAFB; border-top:1px solid #EFF3F6;
-                .plan-title → 11px uppercase label, mb:10px
-                .plan-cards → flex col, gap:6px, mb:12px
-            */}
-            <div className="px-5 py-4 bg-[#F8FAFB]">
-                <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#94A3B8] mb-2.5">
-                    📊 Comparar planes
-                </p>
-
-                <div className="flex flex-col gap-1.5 mb-3">
-                    {Object.entries(PLANS_DATA).map(([key, plan]) => (
-                        <PlanCard
-                            key={key}
-                            planKey={key}
-                            plan={plan}
-                            isSelected={selectedPlan === key}
-                            hoursTag={battery.planHours[key]}
-                        />
-                    ))}
-                </div>
-
-                {/*
-                    .btn-cta
-                    width:100%; padding:14px; border:none; border-radius:12px;
-                    background: linear-gradient(135deg, #2E86C1, #1A4F8A);
-                    color:white; font-size:14px; font-weight:800; cursor:pointer;
-                    font-family:'Nunito'; transition:all 0.2s;
-                    :hover → transform:translateY(-1px); box-shadow:0 6px 20px rgba(37,99,171,0.4);
-                */}
-                <button
-                    onClick={() =>
-                        alert(
-                            "¡Gracias! Un asesor de Subsolar se contactará contigo pronto.",
-                        )
-                    }
-                    className="
-                        w-full py-[14px] border-none rounded-[12px]
-                        text-white text-[14px] font-extrabold font-nunito
-                        cursor-pointer transition-all duration-200
-                        hover:-translate-y-px hover:shadow-[0_6px_20px_rgba(37,99,171,0.4)]
-                    "
-                    style={{
-                        background: "linear-gradient(135deg, #2E86C1, #1A4F8A)",
-                    }}
-                >
-                    Elegir este plan →
-                </button>
             </div>
         </div>
     );

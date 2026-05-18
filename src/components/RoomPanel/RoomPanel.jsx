@@ -45,11 +45,11 @@ const RoomPanel = () => {
                 px-3 py-2 border-b border-[#DDE4EB]
                 md:flex-col md:gap-2 md:overflow-x-hidden md:overflow-y-auto
                 md:px-4 md:py-5 md:border-b-0 md:border-r md:border-[#DDE4EB]
-                bg-white/90 backdrop-blur-[10px]
+                bg-white/90 backdrop-blur-[18px]
             "
         >
-            {/* Section label — hidden on mobile (no room), visible on desktop */}
-            <p className="hidden md:block text-[11px] font-bold tracking-[0.1em] uppercase text-[#94A3B8] px-1 mb-1 shrink-0">
+            {/* Section label — hidden on mobile, visible on desktop */}
+            <p className="hidden md:block text-[11px] font-bold tracking-[0.1em] uppercase text-[#617789] px-1 mb-2 shrink-0">
                 Habitaciones
             </p>
 
@@ -62,8 +62,8 @@ const RoomPanel = () => {
                         key={roomId}
                         onClick={() => selectRoom(roomId)}
                         className={`
-                            cursor-pointer font-jakarta transition-all duration-200
-                            border-2 rounded-[12px]
+                            cursor-pointer transition-all duration-200
+                            border-2 rounded-[18px]
 
                             /* ── MOBILE: compact vertical stack ── */
                             flex-col items-center justify-center gap-0.5
@@ -72,14 +72,14 @@ const RoomPanel = () => {
                             text-center
 
                             /* ── DESKTOP: horizontal row with full info ── */
-                            md:flex-row md:items-center md:gap-[10px]
+                            md:flex-row md:items-center md:gap-[12px]
                             md:w-full md:text-left
-                            md:px-3 md:py-[10px] md:min-w-0
+                            md:px-3 md:py-[11px] md:min-w-0
 
                             ${
                                 isActive
-                                    ? "bg-[#D6EEFB] border-[#5BB8F5]"
-                                    : "bg-transparent border-transparent hover:bg-[#F8FAFB]"
+                                    ? "bg-gradient-to-r from-[#e9fbf3] to-white border-[#13a76b] shadow-[0_4px_12px_rgba(19,167,107,0.15)]"
+                                    : "bg-transparent border-transparent hover:bg-[#f7fbff] hover:border-[#1d8fe3]"
                             }
                         `}
                     >
@@ -88,7 +88,7 @@ const RoomPanel = () => {
                             Mobile  → slightly larger, centred
                             Desktop → fixed 32px container, centred
                         */}
-                        <span className="text-[22px] md:text-[20px] md:w-8 md:text-center shrink-0">
+                        <span className="text-[22px] md:text-[24px] md:w-8 md:text-center shrink-0">
                             {room.emoji}
                         </span>
 
@@ -100,8 +100,8 @@ const RoomPanel = () => {
                         <div className="flex-1 min-w-0">
                             <span
                                 className={`
-                                    block font-bold text-[#1A2942] truncate
-                                    text-[11px] md:text-[13px]
+                                    block font-bold text-[#163042] truncate
+                                    text-[11px] md:text-[13px] md:font-800
                                 `}
                             >
                                 {/*
@@ -124,8 +124,8 @@ const RoomPanel = () => {
                             */}
                             <span
                                 className={`
-                                    hidden md:block text-[11px] mt-px
-                                    ${isActive ? "text-[#2E86C1]" : "text-[#94A3B8]"}
+                                    hidden md:block text-[11px] mt-px font-medium
+                                    ${isActive ? "text-[#08724f]" : "text-[#617789]"}
                                 `}
                             >
                                 {count} {count === 1 ? "activo" : "activos"}
@@ -146,8 +146,8 @@ const RoomPanel = () => {
                                     px-1.5 py-px leading-none
                                     ${
                                         isActive
-                                            ? "bg-[#2E86C1] text-white"
-                                            : "bg-[#EFF3F6] text-[#94A3B8]"
+                                            ? "bg-[#13a76b] text-white"
+                                            : "bg-[#EFF3F6] text-[#617789]"
                                     }
                                 `}
                             >
